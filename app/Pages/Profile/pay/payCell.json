@@ -1,0 +1,19 @@
+{
+  "datas": [
+    {
+      "title": "微信支付",
+      "icon": "../../../Resource/Imags/icon_pay_wx@.png",
+      "isSelect" : true
+    },
+    {
+      "title": "支付宝支付",
+      "icon": "require('../../../Resource/Imags/icon_pay_zfb@.png')",
+      "isSelect" : false
+    },
+    {
+      "title": "银联支付",
+      "icon": "require('../../../Resource/Imags/icon_pay_yl@.png')",
+      "isSelect" : false
+    }
+  ]
+}

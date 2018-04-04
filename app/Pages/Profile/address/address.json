@@ -1,0 +1,46 @@
+{
+  "datas": [
+    {
+      "personName": "张三三",
+      "mobilePhone": "13523562356",
+      "userAddress": "辽宁省抚顺市东洲区龙凤街53街道2委67组2-20",
+      "isSelect": false,
+      "id": "11111111"
+    },
+    {
+      "personName": "李小四",
+      "mobilePhone": "13523562356",
+      "userAddress": "辽宁省抚顺市东洲区龙凤街53街道2委67组2-20",
+      "isSelect": false,
+      "id": "22222222"
+    },
+    {
+      "personName": "黄大五",
+      "mobilePhone": "13523562356",
+      "userAddress": "辽宁省抚顺市东洲区龙凤街53街道2委67组2-20",
+      "isSelect": true,
+      "id": "3333333"
+    },
+    {
+      "personName": "黄大六",
+      "mobilePhone": "13523562356",
+      "userAddress": "辽宁省抚顺市东洲区龙凤街53街道2委67组2-20",
+      "isSelect": false,
+      "id": "44444444444"
+    },
+    {
+      "personName": "黄大七",
+      "mobilePhone": "13523562356",
+      "userAddress": "辽宁省抚顺市东洲区龙凤街53街道2委67组2-20",
+      "isSelect": false,
+      "id": "55555555555"
+    },
+    {
+      "personName": "黄小八",
+      "mobilePhone": "13523562356",
+      "userAddress": "辽宁省抚顺市东洲区龙凤街53街道2委67组2-20",
+      "isSelect": false,
+      "id": "6"
+    }
+  ]
+}

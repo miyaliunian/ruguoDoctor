@@ -1,0 +1,29 @@
+{
+  "datas": [
+    {
+      "title": "饮食"
+    },
+    {
+      "title": "运动"
+    },
+    {
+      "title": "智力"
+    },
+    {
+      "title": "睡眠"
+    }
+  ],
+
+  "towItems": [
+    {
+      "title": "我的医生",
+      "icon": true
+    },
+    {
+      "title": "专病评测",
+      "icon": false
+    }
+  ]
+}
+
+
