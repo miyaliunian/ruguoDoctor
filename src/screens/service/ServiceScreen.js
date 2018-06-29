@@ -6,7 +6,8 @@ import {
     StyleSheet,
     Text,
     View,
-    Image
+    Image,
+    SectionList
 } from 'react-native';
 import theme from '../../config/theme'
 import Ionicons from 'react-native-vector-icons/Ionicons';

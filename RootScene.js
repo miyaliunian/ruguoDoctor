@@ -106,7 +106,7 @@ const TabStack = createMaterialBottomTabNavigator(
     },
     {
 
-        initialRouteName: 'Task',
+        initialRouteName: 'Service',
         order: ['Task', 'Service', 'Profile'],
         activeTintColor: theme.primaryColor,
         headerMode: 'screen',
