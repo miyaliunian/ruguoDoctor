@@ -23,7 +23,7 @@ export default class HomeScreen extends Component {
         ),
         headerRight: (
             <HeaderButtons IconComponent={Ionicons} OverflowIcon={<Ionicons name="ios-more" size={23} color= "#cccccc" />} iconSize={23} color={theme.navItemColor}>
-                <HeaderButtons.Item title="add" iconName="ios-search" onPress={() => console.warn('add')} />>
+                <HeaderButtons.Item title="add" iconName="ios-search" onPress={() => console.warn('add')} />
             </HeaderButtons>
         ),
     })

@@ -9,11 +9,18 @@ import {
     Image
 } from 'react-native';
 import theme from '../../config/theme'
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import HeaderButtons from 'react-navigation-header-buttons'
 
 export default class ServiceScreen extends Component {
 
     static navigationOptions = ({navigation}) => ({
         title: '服务对象',
+        headerRight: (
+            <HeaderButtons IconComponent={Ionicons} OverflowIcon={<Ionicons name="ios-more" size={23} color= "#cccccc" />} iconSize={23} color={theme.navItemColor}>
+                <HeaderButtons.Item title="add" iconName="ios-menu" onPress={() => console.warn('add')} />
+            </HeaderButtons>
+        ),
 
     });
 
