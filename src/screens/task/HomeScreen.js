@@ -16,11 +16,7 @@ import HeaderButtons from 'react-navigation-header-buttons'
 export default class HomeScreen extends Component {
 
     static navigationOptions = ({navigation})=>( {
-        headerLeft: (
-            <HeaderButtons iconSize={23} color={theme.navItemColor}>
-                <HeaderButtons.Item title="历史记录" iconName="ios-search" onPress={() => console.warn('search')} />>
-            </HeaderButtons>
-        ),
+        headerTitle:'待办任务',
         headerRight: (
             <HeaderButtons IconComponent={Ionicons} OverflowIcon={<Ionicons name="ios-more" size={23} color= "#cccccc" />} iconSize={23} color={theme.navItemColor}>
                 <HeaderButtons.Item title="add" iconName="ios-search" onPress={() => console.warn('add')} />
@@ -34,12 +30,8 @@ export default class HomeScreen extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <View style={{backgroundColor:'red'}}>
-                    <HeaderButtons IconComponent={Ionicons} OverflowIcon={<Ionicons name="ios-more" size={23} color= "#cccccc" />} iconSize={23} color={theme.navItemColor}>
-                        <HeaderButtons.Item title="add" iconName="ios-search" onPress={() => console.warn('add')} />>
-                    </HeaderButtons>
-                </View>
+            <View style={theme.root_container}>
+
 
             </View>
         );

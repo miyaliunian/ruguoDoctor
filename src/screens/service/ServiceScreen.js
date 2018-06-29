@@ -30,7 +30,7 @@ export default class ServiceScreen extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <View style={theme.root_container}>
                 <Text>服务对象</Text>
             </View>
         );

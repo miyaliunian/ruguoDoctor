@@ -99,7 +99,7 @@ const TabStack = createMaterialBottomTabNavigator(
             navigationOptions: {
                 tabBarLabel: '我的',
                 tabBarIcon: ({focused, tintColor}) => (
-                    <Icon name={`ios-cart${focused ? '' : '-outline'}`} size={25} color={tintColor}/>
+                    <Icon name={`ios-people${focused ? '' : '-outline'}`} size={25} color={tintColor}/>
                 )
             }
         },
