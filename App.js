@@ -1,21 +1,41 @@
 import React, {Component} from 'react';
 import RootScene from './RootScene'
 import {Provider} from 'mobx-react/native'
-import stores from './app/store'
-// import SplashScreen from 'react-native-splash-screen'
+import stores from './src/store'
 
 export default class App extends Component<{}> {
 
-    // componentDidMount() {
-    //     SplashScreen.hide();
-    // }
+    componentDidMount() {
+        //     SplashScreen.hide();
+
+        if (!__DEV__) {
+            global.console = {
+                info: () =>{
+
+                },
+                log: () =>{
+
+                },
+                warn: () =>{
+
+                },
+                error: () =>{
+
+                },
+            }
+        }else {
+
+        }
+    }
 
     render() {
         return (
+
             <Provider {...stores}>
-              <RootScene/>
+                <RootScene/>
             </Provider>
+
+
         );
     }
 }
-
