@@ -9,10 +9,11 @@ import {
     Image
 } from 'react-native';
 import theme from '../../config/theme'
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import HeaderButtons from 'react-navigation-header-buttons'
+import {observer,inject} from 'mobx-react/native'
 
+@inject('account')
 export default class HomeScreen extends Component {
 
     static navigationOptions = ({navigation})=>( {
@@ -26,6 +27,12 @@ export default class HomeScreen extends Component {
 
     constructor(props) {
         super(props)
+    }
+
+    componentDidMount() {
+        let {account} = this.props;
+        this.code = account.code;
+        console.log(account)
     }
 
     render() {

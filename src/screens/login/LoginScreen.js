@@ -21,8 +21,9 @@ import {Config} from '../../config/config'
 import {Button, Toast} from 'teaset';
 import LoginMobxStore from './LoginMobxStore'
 import LoadingModal from "../../components/LoadingModal";
-import {observer} from 'mobx-react/native'
+import {observer,inject} from 'mobx-react/native'
 import {MoreMenu} from '../../config/moreMenu';
+
 @observer
 export default class LoginScreen extends Component {
 
@@ -40,7 +41,6 @@ export default class LoginScreen extends Component {
         };
         this.dataRepository = new DataRepository();
         this.mobxStore = new LoginMobxStore();
-        this.account = Account;
     }
 
     componentDidMount() {
@@ -88,12 +88,18 @@ export default class LoginScreen extends Component {
         //发送登录请求
         this.dataRepository.postJsonRepository(Config.BASE_URL + Config.API_LOGIN, PARAM)
             .then((data) => {
+            debugger
                 if (data.status === 'success') {
                     this.setState({
                         isLoginModal: false,
                     });
-                    this.saveAccountInfo(data.data);
-                    this.props.navigation.navigate('App')
+                    if ( undefined == data.data.failInfo){
+                        this.saveAccountInfo(data.data);
+                        this.props.navigation.navigate(data.data.route_key)
+                    }else{
+                        DeviceEventEmitter.emit('ToastInfo', data.data.failInfo, 'sad');
+                    }
+
                 }
                 if (data.status === 'fail') {
                     this.setState({
@@ -114,7 +120,7 @@ export default class LoginScreen extends Component {
     }
 
     saveAccountInfo(data) {
-        debugger
+        this.account = Account;
         this.account.code = data.account_info.code;
         this.account.ID = data.account_info.id;
         this.account.mobilePhone = data.account_info.mobilePhone;

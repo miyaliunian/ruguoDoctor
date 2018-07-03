@@ -7,6 +7,6 @@ export const Config ={
     // BASE_URL:'http://test-ftrg.bd-yg.com/ruguo-bs/', //请求基本路径
 
     API_LOGIN: 'mydoctor/modoctoraccountinfo/login', //登录
-    API_SETTINGPASSWord: 'mydoctor/modoctoraccountinfo/settingPassword', //设置密码
+    API_SETPASSWORD: 'mydoctor/modoctoraccountinfo/settingPassword', //设置密码
 
 };

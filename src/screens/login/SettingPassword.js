@@ -16,8 +16,8 @@ import DataRepository from '../../common/dataRepository'
 import {Config} from '../../config/config'
 import {Button, Toast} from 'teaset';
 import LoadingModal from "../../components/LoadingModal";
-import {observer} from 'mobx-react/native'
-
+import {observer,inject} from 'mobx-react/native'
+@inject('account')
 @observer
 export default class SettingPassword extends Component {
     static navigationOptions = ({navigation}) => ( {
@@ -35,13 +35,13 @@ export default class SettingPassword extends Component {
     }
 
     componentDidMount() {
-
+        let {account} = this.props;
+        this.code = account.code;
     }
 
     onSubmitBtn() {
-        let userAccount = this.props.navigation.state.params.userAccount;
         let regex = /^\w{6,16}$/;
-        let password = this.mobx.passBtnInfo.password.slice();
+        let password = '222222';
         if (regex.test(password)) {
             this.setState({
                 isLoginModal: true
@@ -49,10 +49,11 @@ export default class SettingPassword extends Component {
             //拼接登录参数
             let PARAM = {};
             PARAM.oldPassword = password
-            PARAM.code = userAccount;
+            PARAM.code = this.code
             //发送请求
-            this.dataRepository.postJsonRepository(Config.BASE_URL + Config.API_USER_LOGIN_SETTINGPASS, PARAM)
+            this.dataRepository.postJsonRepository(Config.BASE_URL + Config.API_SETPASSWORD, PARAM)
                 .then((data) => {
+
                     if (data.status === 'success') {
                         this.setState({
                             isLoginModal: false
