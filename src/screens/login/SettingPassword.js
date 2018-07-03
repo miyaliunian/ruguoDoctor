@@ -16,6 +16,7 @@ import DataRepository from '../../common/dataRepository'
 import {Config} from '../../config/config'
 import {Button, Toast} from 'teaset';
 import LoadingModal from "../../components/LoadingModal";
+import LoginMobxStore from './LoginMobxStore'
 import {observer,inject} from 'mobx-react/native'
 @inject('account')
 @observer
@@ -27,11 +28,12 @@ export default class SettingPassword extends Component {
 
     constructor(props) {
         super(props)
-        this.dataRepository = new DataRepository();
         this.state = {
             isLoginModal: false,
             loadingModalTxt: '正在提交...'
         }
+        this.dataRepository = new DataRepository();
+        this.mobxStore = new LoginMobxStore();
     }
 
     componentDidMount() {
@@ -40,20 +42,20 @@ export default class SettingPassword extends Component {
     }
 
     onSubmitBtn() {
+        debugger
         let regex = /^\w{6,16}$/;
-        let password = '222222';
+        let password = this.mobxStore.USER_INFO.user_password;
         if (regex.test(password)) {
             this.setState({
                 isLoginModal: true
             });
             //拼接登录参数
             let PARAM = {};
-            PARAM.oldPassword = password
+            PARAM.oldPassword = password;
             PARAM.code = this.code
             //发送请求
             this.dataRepository.postJsonRepository(Config.BASE_URL + Config.API_SETPASSWORD, PARAM)
                 .then((data) => {
-
                     if (data.status === 'success') {
                         this.setState({
                             isLoginModal: false
@@ -65,11 +67,11 @@ export default class SettingPassword extends Component {
                     this.setState({
                         isLoginModal: false
                     });
-                    DeviceEventEmitter.emit('toastInfo', err.status, 'sad');
+                    DeviceEventEmitter.emit('ToastInfo', err.status, 'sad');
                 })
                 .done()
         } else {
-            DeviceEventEmitter.emit('toastInfo', '密码格式不正确', 'sad');
+            DeviceEventEmitter.emit('ToastInfo', '密码格式不正确', 'sad');
         }
     }
 
@@ -83,9 +85,9 @@ export default class SettingPassword extends Component {
                     <LoginView
                         onPress={() => this.onSubmitBtn()}
                         onChangeTopText={(text) => {
-                            this.mobx.passBtnInfo.password = text;
+                            this.mobxStore.USER_INFO.user_password = text;
                         }}
-                        btnSabled={false}
+                        btnSabled={this.mobxStore.btnSettingPasswordEnable}
                     />
                     <LoadingModal txtTitle={this.state.loadingModalTxt} visible={this.state.isLoginModal}/>
                 </View>
@@ -102,7 +104,7 @@ const LoginView = (props) => {
                         onChangeText={props.onChangeTopText}
             />
             <Button title={'确定'}
-                    style={styles.loginEnableButtonStyle}
+                    style={props.btnSabled ? styles.loginDisableButtonStyle : styles.loginEnableButtonStyle}
                     titleStyle={{fontSize: 14, color: 'rgb(255,255,255)'}}
                     disabled={props.btnSabled}
                     onPress={props.onPress}
@@ -114,13 +116,22 @@ const LoginView = (props) => {
 const styles = StyleSheet.create({
     loginViewStyle: {flex: 1},
     loginEnableButtonStyle: {
-        marginTop: px2dp(116),
         marginLeft: px2dp(108),
         marginRight: px2dp(108),
         height: px2dp(80),
+        marginTop: px2dp(86),
         backgroundColor: Theme.buttonColor,
         borderColor: 'transparent',
         borderRadius: 6
-    }
+    },
+    loginDisableButtonStyle: {
+        marginLeft: px2dp(108),
+        marginRight: px2dp(108),
+        height: px2dp(80),
+        marginTop: px2dp(86),
+        backgroundColor: 'rgb(196,196,196)',
+        borderColor: 'transparent',
+        borderRadius: 6
+    },
 });
 

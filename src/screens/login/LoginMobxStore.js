@@ -21,6 +21,15 @@ export default class LoginMobxStore {
         }
     }
 
+
+    @computed get btnSettingPasswordEnable(){
+        if (  this.USER_INFO.user_password!= ''){
+            return false;
+        }else {
+            return true
+        }
+    }
+
 }
 
 

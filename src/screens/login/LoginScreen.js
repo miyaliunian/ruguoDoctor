@@ -88,7 +88,6 @@ export default class LoginScreen extends Component {
         //发送登录请求
         this.dataRepository.postJsonRepository(Config.BASE_URL + Config.API_LOGIN, PARAM)
             .then((data) => {
-            debugger
                 if (data.status === 'success') {
                     this.setState({
                         isLoginModal: false,
