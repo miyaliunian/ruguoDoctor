@@ -41,11 +41,9 @@ export default class LoginScreen extends Component {
         this.dataRepository = new DataRepository();
         this.mobxStore = new LoginMobxStore();
         this.account = Account;
-        this.relationship = Relationship;
     }
 
     componentDidMount() {
-        //Toast
         this.subscription = DeviceEventEmitter.addListener('ToastInfo', (info, type) => {
             if (type === 'success') {
                 Toast.success(info, 1500, 'center');
@@ -88,35 +86,20 @@ export default class LoginScreen extends Component {
         PARAM.mobilePhone = this.mobxStore.USER_INFO.cell_phone;
         PARAM.oldPassword = this.mobxStore.USER_INFO.user_password;
         //发送登录请求
-        this.dataRepository.postJsonRepository(Config.BASE_URL + Config.API_USER_PASSWORD_LOGIN, PARAM)
+        this.dataRepository.postJsonRepository(Config.BASE_URL + Config.API_LOGIN, PARAM)
             .then((data) => {
-
                 if (data.status === 'success') {
                     this.setState({
                         isLoginModal: false,
                     });
-                    if (data.data.status === 'login') {
-                        this.saveAccountInfo(data);
-                        if (data.data.babyFlag === 'have') {
-                            this.saveRelationshipInfo(data);
-                            this.props.navigation.navigate('App')
-                        } else {
-                            //this.props.navigation.navigate(MoreMenu.Profile.Record.menu_add_baby_login,{memberCode: data.data.account_info.memberCode})
-                        }
-                    }
-
-                    if (data.data.status === 'registration') {
-                        this.saveAccountInfo(data)
-                        //this.props.navigation.navigate('settingPassword', {userAccount: data.data.account_info.memberCode})
-
-                    }
+                    this.saveAccountInfo(data.data);
+                    this.props.navigation.navigate('App')
                 }
                 if (data.status === 'fail') {
                     this.setState({
                         isLoginModal: false,
                     });
                     DeviceEventEmitter.emit('ToastInfo', data.msg, 'sad');
-
                 }
 
 
@@ -125,61 +108,24 @@ export default class LoginScreen extends Component {
                 this.setState({
                     isLoginModal: false,
                 })
-                DeviceEventEmitter.emit('ToastInfo', err.status, 'sad');
+                DeviceEventEmitter.emit('ToastInfo', err.status, 'stop');
             })
             .done()
     }
 
     saveAccountInfo(data) {
-        //缓存主用户数据
-        this.account.memberCode = data.data.account_info.memberCode;
-        this.account.picUrl = data.data.account_info.picUrl;
-        this.account.relaId = data.data.account_info.id;
-        this.account.relaPerName = data.data.account_info.relaPerName;
-        this.account.relaPerGenderName = data.data.account_info.relaPerGenderName;
-        this.account.relaPerGenderCode = data.data.account_info.relaPerGenderCode;
-        this.account.relaTypeName = data.data.account_info.relaTypeName;
-        this.account.relaTypeCode = data.data.account_info.relaTypeCode;
-        this.account.relaPerBirthday = data.data.account_info.relaPerBirthday;
-        this.account.relaPerMobilePhone = data.data.account_info.relaPerMobilePhone;
-        this.account.isBuyService = data.data.account_info.isBuyService;
-        this.account.relaPerCertificateType = data.data.account_info.relaPerCertificateType;
-        this.account.relaPerCertificateName = data.data.account_info.relaPerCertificateName;
-        this.account.relaPerCertificateNo = data.data.account_info.relaPerCertificateNo;
+        debugger
+        this.account.code = data.account_info.code;
+        this.account.ID = data.account_info.id;
+        this.account.mobilePhone = data.account_info.mobilePhone;
+        this.account.password = data.account_info.oldPassword;
         //存储 关系用户标识  start
-        this.dataRepository.saveLocalRepository('ACCOUNT', data.data.account_info)
+        this.dataRepository.mergeLocalRepository('ACCOUNT', data)
             .then(result => {
             })
             .catch(error => {
             })
             .done()
-    }
-
-    saveRelationshipInfo(data) {
-        //缓存切换用户数据
-        this.relationship.re_memberCode = data.data.relationship_info.memberCode;
-        this.relationship.re_picUrl = data.data.relationship_info.picUrl;
-        this.relationship.re_relaId = data.data.relationship_info.id;
-        this.relationship.re_relaPerName = data.data.relationship_info.relaPerName;
-        this.relationship.re_relaPerGenderName = data.data.relationship_info.relaPerGenderName;
-        this.relationship.re_relaPerGenderCode = data.data.relationship_info.relaPerGenderCode;
-        this.relationship.re_relaTypeName = data.data.relationship_info.relaTypeName;
-        this.relationship.re_relaTypeCode = data.data.relationship_info.relaTypeCode;
-        this.relationship.re_relaPerBirthday = data.data.relationship_info.relaPerBirthday;
-        this.relationship.re_relaPerMobilePhone = data.data.relationship_info.relaPerMobilePhone;
-        this.relationship.isBuyService = data.data.relationship_info.isBuyService;
-        this.relationship.re_relaPerCertificateType = data.data.relationship_info.relaPerCertificateType;
-        this.relationship.re_relaPerCertificateName = data.data.relationship_info.relaPerCertificateName;
-        this.relationship.re_relaPerCertificateNo = data.data.relationship_info.relaPerCertificateNo;
-        this.relationship.re_patientId = data.data.relationship_info.patientId;
-        //存储用户标识  start
-        this.dataRepository.saveLocalRepository('RELATIONSHIP', data.data.relationship_info)
-            .then(result => {
-            })
-            .catch(error => {
-            })
-            .done()
-        //存储用户标识 end
     }
 
     onClickText(target) {

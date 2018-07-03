@@ -5,33 +5,11 @@ import {observable} from 'mobx'
 
 class Account {
     @observable
-    memberCode = '';//会员编码 member_basic_info
+    ID = ''; //doctor_account_info 表主键
     @observable
-    picUrl = '';
+    code = '';//医生编号
     @observable
-    relaId = '';//会员关系人编码 member_relationship_info
-    @observable
-    relaPerName = '';
-    @observable
-    relaPerGenderName = '';
-    @observable
-    relaPerGenderCode = '';
-    @observable
-    relaTypeName = '';
-    @observable
-    relaTypeCode = '';
-    @observable
-    relaPerBirthday = '';
-    @observable
-    relaPerMobilePhone = '';
-    @observable
-    isBuyService = '';
-    @observable
-    relaPerCertificateType = '';
-    @observable
-    relaPerCertificateName = '';
-    @observable
-    relaPerCertificateNo = ''
+    mobilePhone = '';
 }
 
 export default new Account()
