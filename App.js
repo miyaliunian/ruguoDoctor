@@ -3,7 +3,7 @@ import RootScene from './RootScene'
 import {Provider} from 'mobx-react/native'
 import stores from './src/store'
 
-export default class App extends Component<{}> {
+export default class App extends Component<> {
 
     componentDidMount() {
         //     SplashScreen.hide();

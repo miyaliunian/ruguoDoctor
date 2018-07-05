@@ -75,7 +75,10 @@ import com.android.build.OutputFile
 project.ext.react = [
     entryFile: "index.js"
 ]
-
+project.ext.vectoricons = [
+    iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf' ] // Name of the font files you want to copy
+]
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 apply from: "../../node_modules/react-native/react.gradle"
 
 /**
@@ -99,7 +102,7 @@ android {
 
     defaultConfig {
         applicationId "com.ruguodoctor"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -135,7 +138,11 @@ android {
         }
     }
 }
-
+configurations.all {
+    resolutionStrategy {
+        force 'org.webkit:android-jsc:r224109'
+    }
+}
 dependencies {
     compile project(':react-native-vector-icons')
     compile fileTree(dir: "libs", include: ["*.jar"])
