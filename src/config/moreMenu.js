@@ -11,7 +11,7 @@ export const moreMenu = {
 
     //首页
     TaskScreen: {
-
+        menu_doctorDialogue: 'DoctorDialogueScreen',
     },
 
     //服务对象

@@ -24,6 +24,8 @@ import  HomeScreenTwo from './src/screens/task/HomeScreenTwo'
 import  ServiceScreen from './src/screens/service/ServiceScreen'
 //**************我的
 import  ProfileScreen from './src/screens/profile/ProfileScreen'
+//容器
+import  DoctorDialogueScreen from './src/screens/task/dialog/DoctorDialogueScreen'
 
 export default class App extends Component {
 
@@ -44,6 +46,9 @@ const TabStack = createMaterialBottomTabNavigator(
                 },
                 HomeScreenTwo: {
                     screen: HomeScreenTwo,
+                },
+                DoctorDialogueScreen: {
+                    screen: DoctorDialogueScreen,
                 },
             },{
                 navigationOptions:{
@@ -106,7 +111,7 @@ const TabStack = createMaterialBottomTabNavigator(
     },
     {
 
-        initialRouteName: 'Service',
+        initialRouteName: 'Task',
         order: ['Task', 'Service', 'Profile'],
         activeTintColor: theme.primaryColor,
         headerMode: 'screen',
@@ -170,7 +175,7 @@ const SwitchNavigator = createSwitchNavigator(
 
     },
     {
-        initialRouteName: 'Auth',
+        initialRouteName: 'App',
     }
 )
 
