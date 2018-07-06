@@ -36,28 +36,28 @@ export default class ServiceScreen extends Component {
     constructor(props) {
         super(props)
         this.dataRepository = new DataRepository();
+        this.renderRow = this.renderRow.bind(this)
         this.state = {
             data: '',//数据
-            dataCounts:'',//总数据条数
+            dataCounts: '',//总数据条数
         }
     }
 
     componentWillMount() {
-        // ////debugger
         this.startHeaderHeight = 80;
     }
 
     componentDidMount() {
-        // ////debugger
         let {account} = this.props;
-        //this.code = account.code;
         this.code = '05eae86bddeb4142a24b5eea30249dbf';
-        console.log(account)
     }
 
+    cellClick(rowData) {
+        console.log(rowData)
+    }
 
     renderRow(rowData, index) {
-        return <Cell data={rowData} index = {index}/>
+        return <Cell data={rowData} index={index} callback={() => this.cellClick(rowData)}/>
     }
 
     separatorView = () => {
@@ -65,7 +65,6 @@ export default class ServiceScreen extends Component {
     };
 
     refresh = (callBack) => {
-         ////debugger
         let PARAM = {};
         //医生变好
         PARAM.code = '05eae86bddeb4142a24b5eea30249dbf'
@@ -77,7 +76,7 @@ export default class ServiceScreen extends Component {
             .then((data) => {
                 //debugger
                 this.setState({
-                    dataCounts:data.total
+                    dataCounts: data.total
                 })
                 //debugger
                 let arr = data.rows
@@ -90,8 +89,7 @@ export default class ServiceScreen extends Component {
             .done()
     }
 
-    loadMore=(page,callBack)=>{
-        //debugger
+    loadMore = (page, callBack) => {
         let PARAM = {};
         //医生编号
         PARAM.code = '05eae86bddeb4142a24b5eea30249dbf'
@@ -101,11 +99,8 @@ export default class ServiceScreen extends Component {
         PARAM.rowCount = Config.rowCount
         this.dataRepository.postJsonRepository(Config.BASE_URL + Config.API_ServiceAllList, PARAM)
             .then((data) => {
-                //debugger
-                //if ( undefined == data.rows) return;
                 let arr = data.rows
                 callBack(arr);
-
             })
             .catch((err) => {
                 DeviceEventEmitter.emit('ToastInfo', err.status, 'stop');
@@ -113,7 +108,6 @@ export default class ServiceScreen extends Component {
             .done()
 
     };
-
 
     render() {
         return (
@@ -149,11 +143,11 @@ export default class ServiceScreen extends Component {
                     <View style={theme.line_space_10}/>
                     {/*列表*/}
                     <PageListView
-                        pageLen = {this.state.dataCounts}
+                        pageLen={this.state.dataCounts}
                         renderRow={this.renderRow}
                         refresh={this.refresh}
                         loadMore={this.loadMore}
-                        ItemSeparatorComponent = {this.separatorView}
+                        ItemSeparatorComponent={this.separatorView}
                     />
                 </View>
             </SafeAreaView>
