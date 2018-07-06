@@ -1,4 +1,7 @@
+
 export const Config ={
+    //分页数据
+    rowCount : '10',
 
     //Debug
     BASE_URL:'http://10.101.2.115:8080/ruguo-bs/', //请求基本路径
@@ -8,5 +11,11 @@ export const Config ={
 
     API_LOGIN: 'mydoctor/modoctoraccountinfo/login', //登录
     API_SETPASSWORD: 'mydoctor/modoctoraccountinfo/settingPassword', //设置密码
+
+
+    //服务对象列表
+    API_ServiceSearchList:'/doctorContainer/findMoMberRelationshipInfos',
+    API_ServiceAllList:'/doctorContainer/findMoMberRelationshipInfos',
+
 
 };
