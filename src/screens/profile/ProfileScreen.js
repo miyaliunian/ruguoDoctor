@@ -6,15 +6,24 @@ import {
     TouchableOpacity,
     Image,
     ImageBackground,
-    ScrollView
+    ScrollView,
+    AsyncStorage
 } from 'react-native';
 
 import theme from '../../config/theme';
 import px2dp from '../../common/px2dp';
-
+import Account from '../../store/common/Account'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import TextFix from "../../common/TextFix";
+import ActionSheet from 'react-native-actionsheet'
+
+// ActionSheet常量定义
+const CANCEL_INDEX = 0;
+const DESTRUCTIVE_INDEX = 2;
+const options = ['是', '否'];
+const title = '确定退出登录?';
+
 
 export default class MyPage extends Component<{}> {
     static navigationOptions =({navigation})=>({
@@ -24,6 +33,29 @@ export default class MyPage extends Component<{}> {
     constructor(props) {
         super(props);
         this.state = {}
+    }
+
+    showActionSheet() {
+        this.ActionSheet.show()
+    }
+
+    handlePress(i) {
+        debugger
+        if (i == 0) {
+            //退出登录:清除本地缓存
+            AsyncStorage.clear()
+            //清除App注入缓存
+            this.removeRepository()
+            this.props.navigation.navigate('Auth');
+
+        }
+    }
+
+    removeRepository() {
+        this.account = Account;
+        this.account.ID = '';
+        this.account.code = '';
+        this.account.mobilePhone = '';
     }
 
     render() {
@@ -121,14 +153,25 @@ export default class MyPage extends Component<{}> {
                             size={20}
                             color={'#999'}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.rowItem, styles.topBorder, {height: px2dp(120)}]}>
-                        <TextFix style={{fontSize: px2dp(32), color: '#333333', flex: 1}}>意见反馈</TextFix>
+                    <TouchableOpacity style={[styles.rowItem, styles.topBorder, {height: px2dp(120)}]} onPress = {() => this.showActionSheet()}>
+                        <TextFix style={{fontSize: px2dp(32), color: '#333333', flex: 1}}>退出登录</TextFix>
                         <SimpleLineIcons
                             name={'arrow-right'}
                             size={20}
                             color={'#999'}/>
                     </TouchableOpacity>
                 </ScrollView>
+
+
+                //底部UIAlertController
+                <ActionSheet
+                    ref={actionSheet => this.ActionSheet = actionSheet}
+                    title={title}
+                    options={options}
+                    cancelButtonIndex={CANCEL_INDEX}
+                    destructiveButtonIndex={DESTRUCTIVE_INDEX}
+                    onPress={async (i) => this.handlePress(i)}
+                />
             </View>
         );
     }
