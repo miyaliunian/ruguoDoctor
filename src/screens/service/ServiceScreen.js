@@ -19,7 +19,10 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import HeaderButtons from 'react-navigation-header-buttons'
 import DataRepository from '../../common/dataRepository'
 import Cell from './cell/Cell'
+import {inject} from 'mobx-react/native'
 
+
+@inject('account')
 export default class ServiceScreen extends Component {
 
     static navigationOptions = ({navigation}) => ({
@@ -48,8 +51,9 @@ export default class ServiceScreen extends Component {
     }
 
     componentDidMount() {
+        debugger
         let {account} = this.props;
-        this.code = '05eae86bddeb4142a24b5eea30249dbf';
+        this.code = account.code;
     }
 
     cellClick(rowData) {
@@ -67,7 +71,7 @@ export default class ServiceScreen extends Component {
     refresh = (callBack) => {
         let PARAM = {};
         //医生变好
-        PARAM.code = '05eae86bddeb4142a24b5eea30249dbf'
+        PARAM.code = this.code
         //当前第几页
         PARAM.current = "1"
         //每次请求数据总数
@@ -92,7 +96,7 @@ export default class ServiceScreen extends Component {
     loadMore = (page, callBack) => {
         let PARAM = {};
         //医生编号
-        PARAM.code = '05eae86bddeb4142a24b5eea30249dbf'
+        PARAM.code = this.code
         //当前第几页
         PARAM.current = page
         //每次请求数据总数

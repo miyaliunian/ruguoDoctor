@@ -10,6 +10,8 @@ class Account {
     code = '';//医生编号
     @observable
     mobilePhone = '';
+    @observable
+    password = '';
 }
 
 export default new Account()

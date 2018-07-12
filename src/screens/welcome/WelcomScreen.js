@@ -9,7 +9,7 @@ import {
     Image
 } from 'react-native';
 import DataRepository from '../../common/dataRepository'
-
+import Account from '../../store/common/Account'
 
 export default class WelcomScreen extends Component {
 
@@ -24,20 +24,10 @@ export default class WelcomScreen extends Component {
                 if (result !== '' && result !== null) {//跳转到首页
                     //1：获取缓存账户信息
                     this.account = Account;
-                    this.account.memberCode = result.memberCode;
-                    this.account.picUrl = result.picUrl;
-                    this.account.relaId = result.id;
-                    this.account.relaPerName = result.relaPerName;
-                    this.account.relaPerGenderName = result.relaPerGenderName;
-                    this.account.relaPerGenderCode = result.relaPerGenderCode;
-                    this.account.relaTypeName = result.relaTypeName;
-                    this.account.relaTypeCode = result.relaTypeCode;
-                    this.account.relaPerBirthday = result.relaPerBirthday;
-                    this.account.relaPerMobilePhone = result.relaPerMobilePhone;
-                    this.account.isBuyService = result.isBuyService;
-                    this.account.relaPerCertificateType = result.relaPerCertificateType;
-                    this.account.relaPerCertificateName = result.relaPerCertificateName;
-                    this.account.relaPerCertificateNo = result.relaPerCertificateNo;
+                    this.account.ID = result.account_info.id;
+                    this.account.code = result.account_info.code;
+                    this.account.mobilePhone = result.account_info.mobilePhone;
+                    this.props.navigation.navigate('App')
                 } else {跳转到登录
                     this.props.navigation.navigate('Auth')
                 }
