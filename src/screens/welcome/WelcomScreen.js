@@ -19,6 +19,7 @@ export default class WelcomScreen extends Component {
     }
 
     componentDidMount() {
+        debugger
         this.dataRepository.fetchLocalRepository('ACCOUNT')
             .then(result => {
                 if (result !== '' && result !== null) {//跳转到首页
@@ -28,7 +29,7 @@ export default class WelcomScreen extends Component {
                     this.account.code = result.account_info.code;
                     this.account.mobilePhone = result.account_info.mobilePhone;
                     this.props.navigation.navigate('App')
-                } else {跳转到登录
+                } else {//跳转到登录
                     this.props.navigation.navigate('Auth')
                 }
             })
