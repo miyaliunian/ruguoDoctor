@@ -164,7 +164,7 @@ export default class ServiceScreen extends Component {
     }
 
     renderRow(rowData, index) {
-        return <Cell data={rowData.item} index={index} callback={() => this.cellClick(rowData)}/>
+        return <Cell data={rowData.item} index={index} callback={() => this.cellClick(rowData.item)}/>
     }
 
     separatorView = () => {
