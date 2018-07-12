@@ -13,6 +13,7 @@ import CardStackStyleInterpolator from 'react-navigation/src/views/StackView/Sta
 import Icon from 'react-native-vector-icons/Ionicons'
 
 //业务导入
+import  WelcomScreen from './src/screens/welcome/WelcomScreen'
 import  LoginScreen from './src/screens/login/LoginScreen'
 import  UserAgreement from './src/screens/login/UserAgreement'
 import  SettingPassword from './src/screens/login/SettingPassword'
@@ -50,10 +51,10 @@ const TabStack = createMaterialBottomTabNavigator(
                 DoctorDialogueScreen: {
                     screen: DoctorDialogueScreen,
                 },
-            },{
-                navigationOptions:{
-                    headerStyle:{
-                        backgroundColor:theme.navColor,
+            }, {
+                navigationOptions: {
+                    headerStyle: {
+                        backgroundColor: theme.navColor,
 
                     }
                 }
@@ -71,10 +72,10 @@ const TabStack = createMaterialBottomTabNavigator(
                 index: {
                     screen: ServiceScreen
                 }
-            },{
-                navigationOptions:{
-                    headerStyle:{
-                        backgroundColor:theme.navColor,
+            }, {
+                navigationOptions: {
+                    headerStyle: {
+                        backgroundColor: theme.navColor,
 
                     }
                 }
@@ -92,10 +93,10 @@ const TabStack = createMaterialBottomTabNavigator(
                 index: {
                     screen: ProfileScreen
                 }
-            },{
-                navigationOptions:{
-                    headerStyle:{
-                        backgroundColor:theme.navColor,
+            }, {
+                navigationOptions: {
+                    headerStyle: {
+                        backgroundColor: theme.navColor,
 
                     }
                 }
@@ -155,27 +156,38 @@ const AuthStack = createStackNavigator(
             screen: LoginProfileInfo,
 
         },
-    }, {
+    },
+    {
         initialRouteName: 'Login',
         navigationOptions: {
             gesturesEnabled: false,
-            headerStyle:{
-                backgroundColor:theme.navColor,
+            headerStyle: {
+                backgroundColor: theme.navColor,
             }
             //header: null  //去掉 react-navigation 提供的标题
         }
     }
 )
 
+
+const AuthLoadingScreen = createStackNavigator(
+    {welcome: WelcomScreen},
+    {
+        navigationOptions: {
+            gesturesEnabled: false,
+            headerStyle: {
+                backgroundColor: theme.navColor,
+            },
+            header: null
+        }
+    }
+)
+
 const SwitchNavigator = createSwitchNavigator(
     {
-        //AuthLoading: AuthLoadingScreen,
+        AuthLoading: AuthLoadingScreen,
         Auth: AuthStack,
-        App: AppStack,
-
-    },
-    {
-        initialRouteName: 'App',
-    }
+        App: AppStack, },
+    {initialRouteName: 'AuthLoading',}
 )
 

@@ -143,7 +143,7 @@ export default class ServiceScreen extends Component {
                     <View style={theme.line_space_10}/>
                     {/*列表*/}
                     <PageListView
-                        pageLen={this.state.dataCounts}
+                        pageLen={20}
                         renderRow={this.renderRow}
                         refresh={this.refresh}
                         loadMore={this.loadMore}
