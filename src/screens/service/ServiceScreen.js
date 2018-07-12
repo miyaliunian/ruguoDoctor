@@ -8,10 +8,10 @@ import {
     Text,
     TextInput,
     SafeAreaView,
-    Image,
+    Platform,
     DeviceEventEmitter
 } from 'react-native';
-import PageListView from 'react-native-page-listview'
+import RefreshListView ,{RefreshState} from 'react-native-refresh-list-view'
 import theme from '../../config/theme'
 import {Config} from '../../config/config'
 import Px2dp from '../../common/px2dp'
@@ -21,6 +21,13 @@ import DataRepository from '../../common/dataRepository'
 import Cell from './cell/Cell'
 import {inject} from 'mobx-react/native'
 
+
+const CACHE_RESULTS = {
+    current: 1,//当前页
+    rowCount: 10,//每页显示数
+    total: 0,//总记录数
+    rows: [],//数据集
+};
 
 @inject('account')
 export default class ServiceScreen extends Component {
@@ -40,20 +47,116 @@ export default class ServiceScreen extends Component {
         super(props)
         this.dataRepository = new DataRepository();
         this.renderRow = this.renderRow.bind(this)
+        this.onHeaderRefresh = this.onHeaderRefresh.bind(this)
+        this.onFooterRefresh = this.onFooterRefresh.bind(this)
+        this.isLoadingMore = false;
         this.state = {
-            data: '',//数据
-            dataCounts: '',//总数据条数
+            data: '',
+            refreshState: RefreshState.HeaderRefreshing,
         }
     }
 
     componentWillMount() {
-        this.startHeaderHeight = 80;
     }
 
     componentDidMount() {
-        debugger
         let {account} = this.props;
         this.code = account.code;
+        this.fetchData();
+    }
+
+    fetchData() {
+        let PARAM = {
+            //医生编号
+            code : this.code,
+            current: 1,
+            rowCount: Config.rowCount
+        };
+        this.dataRepository.postJsonRepository(Config.BASE_URL + Config.API_ServiceAllList, PARAM)
+            .then((data) => {
+                if (data && data.rows) {
+                    let item = CACHE_RESULTS.rows.slice();
+                    item = item.concat(data.rows);
+                    CACHE_RESULTS.rows = item;
+                    CACHE_RESULTS.current += 1;
+                    CACHE_RESULTS.total = data.total;
+                    this.setState({
+                         refreshState: RefreshState.Idle,
+                        data: CACHE_RESULTS.rows,
+                    });
+                } else {
+                    this.setState({
+                        refreshState: RefreshState.NoMoreData,
+                        data: CACHE_RESULTS.rows,
+                    });
+                }
+            })
+            .catch((error) => {
+                DeviceEventEmitter.emit('toastInfo', error.status, 'fail');
+                this.setState({
+                    refreshState: RefreshState.Failure,
+                    data: CACHE_RESULTS.rows,
+                });
+            });
+    }
+
+    fetchMoreData(pageNum ,code ){
+        this.setState({
+            refreshState: RefreshState.FooterRefreshing,
+        });
+        let PARAM = {
+            //医生编号
+            code : code,
+            current: pageNum,
+            rowCount: CACHE_RESULTS.rowCount
+        };
+        this.dataRepository.postJsonRepository(Config.BASE_URL + Config.API_ServiceAllList, PARAM)
+            .then((data) => {
+            
+                if (data && data.rows) {
+                    let item = CACHE_RESULTS.rows.slice();
+                    item = item.concat(data.rows);
+                    CACHE_RESULTS.rows = item;
+                    CACHE_RESULTS.current += 1;
+                    CACHE_RESULTS.total = data.total;
+                    this.setState({
+                        refreshState: RefreshState.Idle,
+                        data: CACHE_RESULTS.rows,
+                    });
+                } else {
+                    this.setState({
+                        refreshState: RefreshState.NoMoreData,
+                        data: CACHE_RESULTS.rows,
+                    });
+                }
+            })
+            .catch((error) => {
+                DeviceEventEmitter.emit('toastInfo', error.status, 'fail');
+                this.setState({
+                    refreshState: RefreshState.Failure,
+                    data: CACHE_RESULTS.rows,
+                });
+            });
+    }
+
+    onHeaderRefresh(){
+        //下拉刷新重新加载数据
+        this.fetchData()
+    }
+
+    onFooterRefresh ()  {
+        //没有更多数据
+        if (CACHE_RESULTS.total <= CACHE_RESULTS.rows.length){
+            this.setState({
+                refreshState: RefreshState.NoMoreData,
+            });
+            return
+        }
+        //加载更多数据
+        pageNum = CACHE_RESULTS.current //页码
+        code = this.code// 医生编号
+
+        this.fetchMoreData(pageNum ,code )
     }
 
     cellClick(rowData) {
@@ -61,62 +164,17 @@ export default class ServiceScreen extends Component {
     }
 
     renderRow(rowData, index) {
-        return <Cell data={rowData} index={index} callback={() => this.cellClick(rowData)}/>
+        return <Cell data={rowData.item} index={index} callback={() => this.cellClick(rowData)}/>
     }
 
     separatorView = () => {
         return <View style={theme.line}/>;
     };
 
-    refresh = (callBack) => {
-        let PARAM = {};
-        //医生变好
-        PARAM.code = this.code
-        //当前第几页
-        PARAM.current = "1"
-        //每次请求数据总数
-        PARAM.rowCount = Config.rowCount
-        this.dataRepository.postJsonRepository(Config.BASE_URL + Config.API_ServiceAllList, PARAM)
-            .then((data) => {
-                //debugger
-                this.setState({
-                    dataCounts: data.total
-                })
-                //debugger
-                let arr = data.rows
-                callBack(arr);
-
-            })
-            .catch((err) => {
-                DeviceEventEmitter.emit('ToastInfo', err.status, 'stop');
-            })
-            .done()
-    }
-
-    loadMore = (page, callBack) => {
-        let PARAM = {};
-        //医生编号
-        PARAM.code = this.code
-        //当前第几页
-        PARAM.current = page
-        //每次请求数据总数
-        PARAM.rowCount = Config.rowCount
-        this.dataRepository.postJsonRepository(Config.BASE_URL + Config.API_ServiceAllList, PARAM)
-            .then((data) => {
-                let arr = data.rows
-                callBack(arr);
-            })
-            .catch((err) => {
-                DeviceEventEmitter.emit('ToastInfo', err.status, 'stop');
-            })
-            .done()
-
-    };
-
     render() {
         return (
-            <SafeAreaView style={theme.root_container}>
-                <View style={{flex: 1}}>
+
+                <View style={theme.root_container}>
                     <View style={{
                         height: Px2dp(90),
                         backgroundColor: 'white',
@@ -145,16 +203,16 @@ export default class ServiceScreen extends Component {
                         </View>
                     </View>
                     <View style={theme.line_space_10}/>
-                    {/*列表*/}
-                    <PageListView
-                        pageLen={20}
-                        renderRow={this.renderRow}
-                        refresh={this.refresh}
-                        loadMore={this.loadMore}
-                        ItemSeparatorComponent={this.separatorView}
+                    <RefreshListView
+                        data={this.state.data}
+                        keyExtractor={(item, index) => index}
+                        renderItem={this.renderRow}
+                        refreshState={this.state.refreshState}
+                        onHeaderRefresh={this.onHeaderRefresh}
+                        onFooterRefresh={this.onFooterRefresh}
+
                     />
                 </View>
-            </SafeAreaView>
         );
     }
 }

@@ -19,7 +19,6 @@ export default class WelcomScreen extends Component {
     }
 
     componentDidMount() {
-        debugger
         this.dataRepository.fetchLocalRepository('ACCOUNT')
             .then(result => {
                 if (result !== '' && result !== null) {//跳转到首页

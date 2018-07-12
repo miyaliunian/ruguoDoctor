@@ -26,6 +26,7 @@ export default class Cell extends Component {
 
     render() {
         let {data,callback} = this.props
+        debugger
         return (
             <TouchableOpacity onPress={callback}>
                 <View style={{
