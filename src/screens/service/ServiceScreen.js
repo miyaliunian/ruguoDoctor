@@ -160,7 +160,7 @@ export default class ServiceScreen extends Component {
     }
 
     cellClick(rowData) {
-        console.log(rowData)
+        alert(JSON.stringify(rowData))
     }
 
     renderRow(rowData, index) {
